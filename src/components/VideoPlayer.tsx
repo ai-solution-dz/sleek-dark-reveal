@@ -142,6 +142,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
     }
   };
 
+  // Helper to detect mobile
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 640;
+
   return (
     <motion.div
       ref={containerRef}
@@ -166,7 +169,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
         src={videoUrl}
         className={
           isFullscreen
-            ? 'w-full h-full object-cover bg-black'
+            ? isMobile
+              ? 'w-full h-full object-cover bg-black'
+              : 'w-full h-full object-contain bg-black'
             : 'w-full h-full object-contain bg-black rounded-xl'
         }
         onClick={handleVideoClick}
@@ -175,7 +180,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
         playsInline
         style={
           isFullscreen
-            ? { width: '100vw', height: '100vh', background: '#000' }
+            ? isMobile
+              ? { width: '100vw', height: '100vh', background: '#000', aspectRatio: '9/16' }
+              : { width: '100vw', height: '100vh', background: '#000' }
             : { width: '100%', height: '100%', background: '#000', borderRadius: 'inherit' }
         }
       />

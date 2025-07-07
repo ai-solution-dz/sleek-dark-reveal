@@ -3,7 +3,7 @@ import VideoPlayer from '@/components/VideoPlayer';
 
 const Index = () => {
   // Sample video URL - replace with your actual video
-  const videoUrl = "/public/docin-mvp.mp4";
+  const videoUrl = "/docin-mvp.mp4";
 
   return (
     <div className="min-h-screen bg-background">

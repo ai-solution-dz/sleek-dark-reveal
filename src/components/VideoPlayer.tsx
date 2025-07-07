@@ -125,12 +125,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
           transition={{ duration: 0.2 }}
         >
           <motion.button
-            className="w-20 h-20 bg-primary/20 backdrop-blur-sm rounded-full flex items-center justify-center pointer-events-auto"
+            className="w-20 h-20 bg-red-100 hover:bg-red-200 backdrop-blur-sm rounded-full flex items-center justify-center pointer-events-auto transition-colors"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={togglePlay}
           >
-            <Play className="w-8 h-8 text-primary ml-1" />
+            <Play className="w-8 h-8 text-red-600 ml-1" />
           </motion.button>
         </motion.div>
 
@@ -165,15 +165,15 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <motion.button
-                className="w-10 h-10 bg-video-controls hover:bg-video-controls-hover rounded-full flex items-center justify-center transition-colors"
+                className="w-10 h-10 bg-red-100 hover:bg-red-200 rounded-full flex items-center justify-center transition-colors"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={togglePlay}
               >
                 {isPlaying ? (
-                  <Pause className="w-5 h-5 text-foreground" />
+                  <Pause className="w-5 h-5 text-red-600" />
                 ) : (
-                  <Play className="w-5 h-5 text-foreground ml-0.5" />
+                  <Play className="w-5 h-5 text-red-600 ml-0.5" />
                 )}
               </motion.button>
 
@@ -211,12 +211,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
             </div>
 
             <motion.button
-              className="w-8 h-8 flex items-center justify-center text-foreground hover:text-primary transition-colors"
+              className="w-10 h-10 bg-red-100 hover:bg-red-200 rounded-full flex items-center justify-center transition-colors ml-2"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={toggleFullscreen}
             >
-              <Maximize className="w-5 h-5" />
+              <Maximize className="w-5 h-5 text-red-600" />
             </motion.button>
           </div>
         </motion.div>

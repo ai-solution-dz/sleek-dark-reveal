@@ -22,15 +22,6 @@ const Index = () => {
           >
             Présentation du Produit
           </motion.h1>
-          
-          <motion.p
-            className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            Découvrez notre innovation à travers cette présentation vidéo exclusive
-          </motion.p>
         </motion.div>
 
         <motion.div
@@ -40,6 +31,19 @@ const Index = () => {
           className="w-full max-w-5xl mx-auto"
         >
           <VideoPlayer videoUrl={videoUrl} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="text-center mt-8 mb-8"
+        >
+          <motion.p
+            className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto"
+          >
+            Découvrez notre innovation à travers cette présentation vidéo exclusive
+          </motion.p>
         </motion.div>
 
         <motion.div

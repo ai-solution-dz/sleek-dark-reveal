@@ -60,6 +60,17 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'f' || e.key === 'F') {
+        e.preventDefault();
+        toggleFullscreen();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const togglePlay = () => {
     const video = videoRef.current;
     if (!video) return;
@@ -159,6 +170,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
             : 'w-full h-full object-contain bg-black rounded-xl'
         }
         onClick={handleVideoClick}
+        onDoubleClick={toggleFullscreen}
         controls={false}
         playsInline
         style={

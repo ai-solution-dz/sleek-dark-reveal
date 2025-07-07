@@ -293,7 +293,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
           </div>
 
           <motion.button
-            className="w-8 h-8 sm:w-7 sm:h-7 xs:w-7 xs:h-7 flex items-center justify-center text-foreground hover:text-primary transition-colors"
+            className="w-10 h-10 sm:w-9 sm:h-9 xs:w-8 xs:h-8 bg-white rounded-full flex items-center justify-center transition-colors shadow"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={toggleFullscreen}

@@ -3,7 +3,7 @@ import VideoPlayer from '@/components/VideoPlayer';
 
 const Index = () => {
   // Sample video URL - replace with your actual video
-  const videoUrl = "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4";
+  const videoUrl = "/public/docin-mvp.mp4";
 
   return (
     <div className="min-h-screen bg-background">
@@ -54,6 +54,9 @@ const Index = () => {
           </p>
         </motion.div>
       </div>
+      <footer className="w-full py-6 bg-background border-t border-border text-center text-xs text-muted-foreground mt-8">
+        © 2025 Doc-in. Tous droits réservés.
+      </footer>
     </div>
   );
 };

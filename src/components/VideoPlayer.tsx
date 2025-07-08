@@ -78,6 +78,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
         e.preventDefault();
         togglePlay();
       }
+      // Add left arrow shortcut for go back
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        handleRewind10();
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);

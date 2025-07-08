@@ -195,6 +195,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
         onDoubleClick={toggleFullscreen}
         controls={false}
         playsInline
+        preload="auto"
         onWaiting={() => setIsBuffering(true)}
         onLoadStart={() => setIsBuffering(true)}
         onPlaying={() => setIsBuffering(false)}

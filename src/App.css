@@ -40,3 +40,62 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Custom white thumb for volume slider */
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ef4444;
+  border: 2px solid #ef4444;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.volume-slider:focus::-webkit-slider-thumb {
+  outline: none;
+  box-shadow: 0 0 0 2px #ef4444;
+}
+.volume-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ef4444;
+  border: 2px solid #ef4444;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.volume-slider:focus::-moz-range-thumb {
+  outline: none;
+  box-shadow: 0 0 0 2px #ef4444;
+}
+.volume-slider::-ms-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ef4444;
+  border: 2px solid #ef4444;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.volume-slider:focus::-ms-thumb {
+  outline: none;
+  box-shadow: 0 0 0 2px #ef4444;
+}
+
+/* Remove default styles for range input for consistency */
+.volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+.volume-slider::-ms-fill-lower {
+  background: transparent;
+}
+.volume-slider::-ms-fill-upper {
+  background: transparent;
+}

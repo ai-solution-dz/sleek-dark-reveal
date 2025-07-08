@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Volume2, VolumeX, Maximize } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Maximize, Undo } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface VideoPlayerProps {
@@ -24,14 +24,20 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
 
     const updateTime = () => setCurrentTime(video.currentTime);
     const updateDuration = () => setDuration(video.duration);
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
     
     video.addEventListener('timeupdate', updateTime);
     video.addEventListener('loadedmetadata', updateDuration);
     video.addEventListener('ended', () => setIsPlaying(false));
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
 
     return () => {
       video.removeEventListener('timeupdate', updateTime);
       video.removeEventListener('loadedmetadata', updateDuration);
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
     };
   }, []);
 
@@ -66,6 +72,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
         e.preventDefault();
         toggleFullscreen();
       }
+      // Add spacebar shortcut for play/pause
+      if (e.code === 'Space' || e.key === ' ') {
+        e.preventDefault();
+        togglePlay();
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -75,12 +86,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
     const video = videoRef.current;
     if (!video) return;
 
-    if (isPlaying) {
-      video.pause();
-    } else {
+    if (video.paused || video.ended) {
       video.play();
+    } else {
+      video.pause();
     }
-    setIsPlaying(!isPlaying);
   };
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,6 +150,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
     } else {
       togglePlay();
     }
+  };
+
+  const handleRewind10 = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.currentTime = Math.max(0, video.currentTime - 5);
   };
 
   // Helper to detect mobile
@@ -217,11 +233,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
       >
         {/* Progress Bar */}
         <div className="mb-4 xs:mb-2">
-          <div className="relative">
-            <div className="w-full h-1 bg-video-progress-bg rounded-full xs:h-0.5">
+          <div className="relative group">
+            <div className="w-full h-1 group-hover:h-2 bg-video-progress-bg rounded-full xs:h-0.5 transition-all duration-200">
               <div
-                className="h-full bg-video-progress rounded-full transition-all duration-200"
-                style={{ width: `${progress}%` }}
+                className="h-full rounded-full transition-all duration-200"
+                style={{ width: `${progress}%`, background: '#ef4444' }}
               />
             </div>
             <input
@@ -230,7 +246,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
               max="100"
               value={progress}
               onChange={handleSeek}
-              className="absolute inset-0 w-full h-1 opacity-0 cursor-pointer xs:h-2 xs:top-[-4px]"
+              className="absolute inset-0 w-full h-1 group-hover:h-2 opacity-0 cursor-pointer xs:h-2 xs:top-[-4px] transition-all duration-200"
               tabIndex={0}
               aria-label="Seek video"
             />
@@ -255,6 +271,18 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
               )}
             </motion.button>
 
+            {/* Go Back 10 Seconds button */}
+            <motion.button
+              className="w-10 h-10 sm:w-9 sm:h-9 xs:w-8 xs:h-8 bg-white rounded-full flex items-center justify-center transition-colors shadow ml-2"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={handleRewind10}
+              tabIndex={0}
+              aria-label="Go back 10 seconds"
+            >
+              <Undo className="w-5 h-5 text-red-600" />
+            </motion.button>
+
             <div className="flex items-center space-x-2">
               <motion.button
                 className="w-8 h-8 sm:w-7 sm:h-7 xs:w-7 xs:h-7 flex items-center justify-center text-foreground hover:text-primary transition-colors"
@@ -277,9 +305,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
                   max="100"
                   value={isMuted ? 0 : volume * 100}
                   onChange={handleVolumeChange}
-                  className="w-full h-1 xs:h-0.5 bg-video-progress-bg rounded-full appearance-none cursor-pointer"
+                  className="w-full h-1 xs:h-0.5 bg-video-progress-bg rounded-full appearance-none cursor-pointer volume-slider"
                   style={{
-                    background: `linear-gradient(to right, hsl(var(--video-progress)) 0%, hsl(var(--video-progress)) ${isMuted ? 0 : volume * 100}%, hsl(var(--video-progress-bg)) ${isMuted ? 0 : volume * 100}%, hsl(var(--video-progress-bg)) 100%)`
+                    background: `linear-gradient(to right, #ef4444 0%, #ef4444 ${isMuted ? 0 : volume * 100}%, #fecaca ${isMuted ? 0 : volume * 100}%, #fecaca 100%)`
                   }}
                   tabIndex={0}
                   aria-label="Volume"
@@ -292,16 +320,20 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
             </span>
           </div>
 
-          <motion.button
-            className="w-10 h-10 sm:w-9 sm:h-9 xs:w-8 xs:h-8 bg-white rounded-full flex items-center justify-center transition-colors shadow"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={toggleFullscreen}
-            tabIndex={0}
-            aria-label="Fullscreen"
-          >
-            <Maximize className="w-5 h-5 text-red-600" />
-          </motion.button>
+          {/* Right-side controls: logo and fullscreen button, with fullscreen at the far right */}
+          <div className="flex items-center space-x-0 xs:space-x-0 ml-auto">
+            <motion.button
+              className="w-10 h-10 sm:w-9 sm:h-9 xs:w-8 xs:h-8 bg-white rounded-full flex items-center justify-center transition-colors shadow"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={toggleFullscreen}
+              tabIndex={0}
+              aria-label="Fullscreen"
+              style={{ marginLeft: 0 }}
+            >
+              <Maximize className="w-5 h-5 text-red-600" />
+            </motion.button>
+          </div>
         </div>
       </motion.div>
     </motion.div>
